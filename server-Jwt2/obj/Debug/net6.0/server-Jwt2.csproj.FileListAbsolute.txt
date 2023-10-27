@@ -30,3 +30,16 @@ C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server
 C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\obj\Debug\net6.0\server-Jwt2.pdb
 C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\obj\Debug\net6.0\server-Jwt2.genruntimeconfig.cache
 C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\obj\Debug\net6.0\ref\server-Jwt2.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\AWSSDK.Core.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\AWSSDK.SecurityToken.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\DnsClient.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\MongoDB.Bson.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\MongoDB.Driver.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\MongoDB.Driver.Core.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\MongoDB.Libmongocrypt.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\SharpCompress.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\Snappier.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\ZstdSharp.dll
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\runtimes\linux\native\libmongocrypt.so
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\runtimes\osx\native\libmongocrypt.dylib
+C:\Users\mchla\OneDrive\Documentos\Proyectos\AppAuthorization\server-Jwt2\server-Jwt2\bin\Debug\net6.0\runtimes\win\native\mongocrypt.dll
