@@ -36,7 +36,7 @@ namespace server_Jwt2.Repository_s
         }
            
 
-        public async Task<client?> GetAsync(string id)
+        public async Task<client?> GetByIdAsync(string id)
         {
             try
             {
@@ -67,12 +67,17 @@ namespace server_Jwt2.Repository_s
         }
             
 
-        public async Task<String> UpdateAsync(string id, client updatedClient)
+        public async Task<String> UpdateAsync( client updatedClient)
         {
             try
             {
-                await _clientsCollection.ReplaceOneAsync(x => x.Id == id, updatedClient);
-                return "true";
+                var myClient = await _clientsCollection.Find(x => x.Id == updatedClient.Id).FirstOrDefaultAsync();
+                if (myClient!=null)
+                {
+                    await _clientsCollection.ReplaceOneAsync(x => x.Id == updatedClient.Id, updatedClient);
+                    return "true";
+                }
+                return "false";
             }
             catch (Exception e)
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Driver.Core.WireProtocol.Messages;
 using server_Jwt2.Models;
 using server_Jwt2.Repository_s;
 using WebApiClientes.Models.Dto;
@@ -32,7 +33,7 @@ namespace server_Jwt2.Controllers
                     return Ok(response);
                 }
                 response.DisplayMessages = "Clients not found";
-                
+
                 return BadRequest(response);
             }
             catch (Exception e)
@@ -40,7 +41,7 @@ namespace server_Jwt2.Controllers
                 response.DisplayMessages = "Error";
                 response.ErrorsMessages = e.ToString();
                 return BadRequest(response);
-                
+
             }
         }
 
@@ -50,9 +51,9 @@ namespace server_Jwt2.Controllers
             try
             {
                 var message = await _clientService.CreateAsync(newClient);
-                if (message== "true")
+                if (message == "true")
                 {
-                    response.DisplayMessages="new Client has created";
+                    response.DisplayMessages = "new Client has created";
                     return Ok(response);
                 }
                 response.DisplayMessages = "Error internal";
@@ -66,6 +67,88 @@ namespace server_Jwt2.Controllers
                 return BadRequest(response);
 
             }
-        }
+        }//end of Post
+
+        [HttpPut]
+        public async Task<IActionResult> updateClient(client myClient)
+        {
+            try
+            {
+                var message = await _clientService.UpdateAsync( myClient);
+                if (message == "true")
+                {
+                    response.IsSuccess = true;
+                    response.DisplayMessages = "client has been update";
+                    return Ok(response);
+                }
+                               
+                    if (message=="false")
+                    {
+                        response.IsSuccess = false;
+                        response.DisplayMessages = "Client not found";
+                        return BadRequest(response);
+
+                    }
+                
+                response.ErrorsMessages = message;
+                response.DisplayMessages = "Internal error";
+                return BadRequest(response);    
+            }
+            catch (Exception e)
+            {
+                response.DisplayMessages = "Error";
+                response.ErrorsMessages = e.ToString();
+                return BadRequest(response);
+
+            }
+        }// end of update
+
+        [HttpGet("{id:length(24)}")]
+        public async Task<IActionResult> getClientById(string id)
+        {
+            try
+            {
+                var message =await _clientService.GetByIdAsync(id);
+                if (message==null)
+                {
+                    response.DisplayMessages = "Client not found";
+                    return BadRequest(response);
+                }
+                response.DisplayMessages = "Client Details";
+                response.Result = message;
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                response.DisplayMessages = "Error";
+                response.ErrorsMessages = e.ToString();
+                return BadRequest(response);
+
+            }
+        }// end of getById
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> removeClient(string id)
+        {
+            try
+            {
+                var message =await _clientService.RemoveAsync(id);
+                if (message=="true")
+                {
+                    response.DisplayMessages = "Client has been removed";
+                    return Ok(response);
+                }
+                response.ErrorsMessages = message;
+                response.DisplayMessages = "Client not found";
+                return BadRequest(response);
+
+            }
+            catch (Exception e)
+            {
+                response.DisplayMessages = "Error";
+                response.ErrorsMessages = e.ToString();
+                return BadRequest(response);
+
+            }
+        }// end of remove
     }
 }
