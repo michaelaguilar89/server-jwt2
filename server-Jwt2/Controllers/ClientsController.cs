@@ -131,13 +131,19 @@ namespace server_Jwt2.Controllers
         {
             try
             {
-                var message =await _clientService.RemoveAsync(id);
-                if (message=="true")
+                var message = await _clientService.GetByIdAsync(id);
+                if (message == null)
+                {
+                    response.DisplayMessages = "Client not found";
+                    return BadRequest(response);
+                }
+                var message2 =await _clientService.RemoveAsync(id);
+                if (message2=="true")
                 {
                     response.DisplayMessages = "Client has been removed";
                     return Ok(response);
                 }
-                response.ErrorsMessages = message;
+                response.ErrorsMessages = message2;
                 response.DisplayMessages = "Client not found";
                 return BadRequest(response);
 
