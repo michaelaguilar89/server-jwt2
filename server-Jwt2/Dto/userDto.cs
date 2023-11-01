@@ -1,19 +1,20 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 
-namespace server_Jwt2.Models
+namespace server_Jwt2.Dto
 {
-    public class user
+    public class userDto
     {
-        [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+
         public string? Id { get; set; }
-        [BsonRequired]
+        
         public string? userName { get; set; }
-        [BsonRequired]
+      
         public string? role { get; set; }
-        [BsonRequired]
+
         public string? password { get; set; }
-        [BsonRequired]
+       
         public string? photo { get; set; }
+        public string? token { get; set; }
+        public DateTime? expirationTime { get; set; }
     }
 }
