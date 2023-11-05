@@ -9,6 +9,6 @@
         public string UsersCollectionName { get; set; } = null!;
         public string InventoryCollectionName { get; set; } = null!;
         public string SalesCollectionName { get; set; } = null!;
-        public string CategoryCollectionName { get; set; } = null!;
+        public string CategorysCollectionName { get; set; } = null!;
     }
 }

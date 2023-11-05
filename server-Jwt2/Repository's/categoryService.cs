@@ -18,7 +18,7 @@ namespace server_Jwt2.Repository_s
                 _clientDatabaseSettings.Value.DatabaseName);
 
             _categoryCollection = mongoDatabase.GetCollection<category>(
-                _clientDatabaseSettings.Value.CategoryCollectionName);
+                _clientDatabaseSettings.Value.CategorysCollectionName);
         }
 
         public async Task<List<category>> GetAsync()
@@ -36,7 +36,7 @@ namespace server_Jwt2.Repository_s
         }
            
 
-        public async Task<category?> GetAsync(string id)
+        public async Task<category?> GetByIdAsync(string id)
         {
             try
             {
@@ -67,12 +67,12 @@ namespace server_Jwt2.Repository_s
         }
             
 
-        public async Task<string> UpdateAsync(string id, category updatedBook)
+        public async Task<string> UpdateAsync( category updatedCategory)
         {
             try
             {
 
-                await _categoryCollection.ReplaceOneAsync(x => x.Id == id, updatedBook);
+                await _categoryCollection.ReplaceOneAsync(x => x.Id == updatedCategory.Id, updatedCategory);
                 return "Ok";
             }
             catch (Exception e)

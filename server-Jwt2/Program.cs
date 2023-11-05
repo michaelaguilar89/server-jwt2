@@ -12,6 +12,7 @@ builder.Services.Configure<clientDatabaseSettings>(
     builder.Configuration.GetSection("clientDatabase"));
 builder.Services.AddSingleton<clientService>();
 builder.Services.AddSingleton<userService>();
+builder.Services.AddSingleton<categoryService>();
 
 //swagger
 
