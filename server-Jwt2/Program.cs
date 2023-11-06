@@ -13,6 +13,7 @@ builder.Services.Configure<clientDatabaseSettings>(
 builder.Services.AddSingleton<clientService>();
 builder.Services.AddSingleton<userService>();
 builder.Services.AddSingleton<categoryService>();
+builder.Services.AddSingleton<inventoryService>();
 
 //swagger
 
