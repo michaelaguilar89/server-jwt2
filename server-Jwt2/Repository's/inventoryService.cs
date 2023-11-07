@@ -1,12 +1,15 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using server_Jwt2.Dto;
 using server_Jwt2.Models;
+using System.Runtime.InteropServices;
 
 namespace server_Jwt2.Repository_s
 {
    
     public class inventoryService
     {
+
         private readonly categoryService _category;
         private readonly IMongoCollection<inventory> _inventoryCollection;
 
@@ -27,6 +30,39 @@ namespace server_Jwt2.Repository_s
         }
 
        
+        public async Task<Object> decreaseQuantity(List<productList> list)
+        {
+            try
+            {
+                List<productList> myList = new();
+                
+                foreach (var item in list)
+                {
+                   
+                    var product = await _inventoryCollection.Find(x => x.Id == item.id &&
+                                  x.quantity >= item.quantity).FirstOrDefaultAsync();
+                    if (product!=null)
+                    {
+                        product.quantity -= item.quantity;
+                       await _inventoryCollection.ReplaceOneAsync(
+                            x => x.Id == item.id && x.quantity >= item.quantity, product);
+                    }
+                    else
+                    {
+                        myList.Add(item);
+                    }
+                }                                       
+                       
+                 return "Sales Ok";
+               
+                
+            }
+            catch (Exception)
+            {
+
+               return null;
+            }
+        }
 
         public async Task<List<inventory>> GetAsync()
         {

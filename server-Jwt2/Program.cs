@@ -14,6 +14,7 @@ builder.Services.AddSingleton<clientService>();
 builder.Services.AddSingleton<userService>();
 builder.Services.AddSingleton<categoryService>();
 builder.Services.AddSingleton<inventoryService>();
+builder.Services.AddSingleton<SalesService>();
 
 //swagger
 
