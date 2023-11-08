@@ -21,11 +21,11 @@ namespace server_Jwt2.Controllers
 
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register(user credentials)
+        public async Task<IActionResult> Register(userRegisterDto credentials)
         {
             try
             {
-                var userCredentials = await userService.createUser(credentials);
+                var userCredentials = await userService.register(credentials);
                 if (userCredentials!=null)
                 {
                     response.IsSuccess = true;
@@ -49,7 +49,7 @@ namespace server_Jwt2.Controllers
         {
             try
             {
-                var userCredentials = await userService.getUserDetails(credentials);
+                var userCredentials = await userService.login(credentials);
                 if (userCredentials!=null)
                 {
                     response.IsSuccess = true;

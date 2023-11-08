@@ -11,8 +11,11 @@ namespace server_Jwt2.Models
         public string? userName { get; set; }
         [BsonRequired]
         public string? role { get; set; }
+        
         [BsonRequired]
-        public string? password { get; set; }
+        public byte[]? passwordSalt { get; set; }
+        [BsonRequired]
+        public byte[]? passwordHash { get; set; }
         [BsonRequired]
         public string? photo { get; set; }
     }

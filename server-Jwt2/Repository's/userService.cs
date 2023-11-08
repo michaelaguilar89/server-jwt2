@@ -4,17 +4,20 @@ using MongoDB.Driver;
 using server_Jwt2.Dto;
 using server_Jwt2.Models;
 using System.IdentityModel.Tokens.Jwt;
+using System.Resources;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace server_Jwt2.Repository_s
 {
     public class userService
     {
+        private readonly IConfiguration _configuration;
+
         private readonly IMongoCollection<user> _userCollection;
 
-        public userService(IOptions<clientDatabaseSettings> clienteDatabaseSettings)
+        public userService(IOptions<clientDatabaseSettings> clienteDatabaseSettings,
+                            IConfiguration configuration)
         {
             
             {
@@ -29,6 +32,8 @@ namespace server_Jwt2.Repository_s
 
                 
             }
+
+            _configuration = configuration;
         }
 
        public async Task<List<user?>> GetUser()
@@ -74,7 +79,7 @@ namespace server_Jwt2.Repository_s
             return encodedJwt;
 
         }
-        public async Task<Object> createUser(user myUser)
+        public async Task<Object> register(userRegisterDto myUser)
         {
 
 
@@ -86,51 +91,67 @@ namespace server_Jwt2.Repository_s
                     // "userName is taken!"
                     return null;
                 }
-                await _userCollection.InsertOneAsync(myUser);
 
-                DateTime myDateNow = DateTime.Now;
-                var myToken = GenerateToken(myDateNow,myUser);
+            user newUser = new();
+                     generatePassword(myUser.password, out byte[] passwordSalt ,out byte[] passwordHash);
+            newUser.Id = "";
+            newUser.userName = myUser.userName;
+            newUser.role = myUser.role;
+            newUser.photo = myUser.photo;
+            newUser.passwordHash = passwordHash;
+            newUser.passwordSalt = passwordSalt;
+                await _userCollection.InsertOneAsync(newUser);
+
+            DateTime myDateNow = DateTime.UtcNow;
+                var myToken = GenerateToken(myDateNow, newUser);
                 userDto userCredentials = new userDto()
                 {
-                    Id = myUser.Id,
-                    userName = myUser.userName,
-                    role = myUser.role,
+                    Id = newUser.Id,
+                    userName = newUser.userName,
+                    role = newUser.role,
                     token = myToken,
                     expirationTime = myDateNow.AddHours(2),
-                    photo = myUser.photo
+                    photo = newUser.photo
 
                 };
                 return userCredentials;
-           
+             
         }//end of create user
         //login
-        public async Task<Object> getUserDetails(userLoginDto myUser)
+        public async Task<Object> login(userLoginDto myUser)
         {
-           
-            
+
+                 bool correctPassword = false;
                 var result = await _userCollection
-                    .Find(x => x.userName == myUser.username && 
-                      x.password == myUser.password).FirstOrDefaultAsync();
-                if (result !=null)
-                {
-                DateTime myDateNow = DateTime.Now;
-                var myToken = GenerateToken(myDateNow,result);
-                userDto userCredentials = new userDto()
-                {
-                    Id = result.Id,
-                    userName = result.userName,
-                    role = result.role,
-                    token = myToken,
-                    expirationTime = myDateNow.AddHours(2),
-                    photo = result.photo
+                    .Find(x => x.userName == myUser.username).FirstOrDefaultAsync();
 
-                };
-                return userCredentials;
+            if (result!=null)
+            {
+                correctPassword = verifyPassword(myUser.password, result.passwordSalt, result.passwordHash);
+                if (correctPassword == true)
+                {
+
+
+                    DateTime myDateNow = DateTime.Now;
+                    var myToken = GenerateToken(myDateNow, result);
+                    userDto userCredentials = new userDto()
+                    {
+                        Id = result.Id,
+                        userName = result.userName,
+                        role = result.role,
+                        token = myToken,
+                        expirationTime = myDateNow.AddHours(2),
+                        photo = result.photo
+
+                    };
+                    return userCredentials;
                 }//end of if
-                //user not found or invalid credentials
-                return null;
+            }
+                   
+                
+                return null;//user not found or invalid credentials
 
-            
+
         }//end of getUsersDetails
         public async Task<string> updateUser(user myUser)
         {
@@ -150,6 +171,32 @@ namespace server_Jwt2.Repository_s
                 return e.Message;
             }
         }//end of update
+        private void generatePassword(string password, out byte[] passwordSalt, out byte[] passwordHash)
+        {
+            using( var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            }
+        }
+        private bool verifyPassword(string password, byte[] passwordSalt,  byte[] passwordHash)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512(passwordSalt))
+            {
+                bool state = true; ;
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != passwordHash[i])
+                    {
+                       state= false;
+                    }
+
+                }
+               
+                return state;
+            }
+        }
         public async Task<string> removeUser(string id)
         {
             try
@@ -169,6 +216,7 @@ namespace server_Jwt2.Repository_s
             }
         }//end of remove
 
-
+        
     }
+     
 }
